@@ -1,0 +1,145 @@
+.auth {
+  max-width: 396px;
+  padding: 70px 0;
+  margin: 0 auto;
+}
+
+.auth__title {
+  margin: 0;
+  padding: 37px 0 40px;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.auth__form {
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
+}
+
+.auth__button {
+  width: 100%;
+  border: none;
+  border-radius: 3px;
+  background-color: rgba(0, 0, 0, 1);
+  margin-bottom: 16px;
+  padding: 13px 0 15px;
+  color: #FFF;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  transition: background-color .5s ease;
+}
+
+.auth__button_type_register {
+  margin-top: 116px;
+}
+
+.auth__button_type_login {
+  margin-top: 197px;
+}
+
+.auth__button:hover {
+  background-color: rgba(0, 0, 0, .7);
+}
+
+.auth__button:hover {
+  background-color: rgba(0, 0, 0, .7);
+}
+
+.auth__question {
+  margin-right: 6px;
+  color: #A0A0A0;
+}
+
+.auth__link {
+  position: relative;
+  display: block;
+  margin: 0 auto;
+  text-decoration: none;
+  color: #000;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.auth__link_type_register {
+  max-width: 217px;
+}
+
+.auth__link_type_login {
+  max-width: 285px;
+}
+
+.auth__link::before {
+  position: absolute;
+  content: "";
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background-color: #000;
+  transition: width .5s ease;
+}
+
+.auth__link:hover::before {
+  width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .auth {
+    padding: 232px 0;
+  }
+}
+
+@media screen and (max-width: 474px) {
+  .auth {
+    padding-top: 56px;
+    padding-bottom: 30px;
+    max-width: calc(100% - 60px);
+  }
+
+  .auth__logo {
+    display: block;
+    margin: auto;
+  }
+
+  .auth__title {
+    text-align: center;
+    padding: 50px 0 80px;
+  }
+
+  .auth__input {
+    height: 33px;
+  }
+
+  .auth__button {
+    font-size: 12px;
+    margin-bottom: 14px;
+    padding: 15px 0;
+  }
+
+  .auth__button_type_register {
+    margin-top: 201px;
+  }
+
+  .auth__button_type_login {
+    margin-top: 283px;
+  }
+
+  .auth__link {
+    font-size: 12px;
+  }
+
+  .auth__link_type_register {
+    max-width: 188px;
+  }
+
+  .auth__link_type_login {
+    max-width: 246px;
+  }
+}

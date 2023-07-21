@@ -1,0 +1,109 @@
+.movies__card {
+  border-radius: 6px;
+  background: #FDFDFD;
+  box-shadow: 0px 4px 30px 0px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 18px 0;
+}
+
+.movies__info {
+  padding: 0 18px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.movies__name {
+  max-width: 200px;
+  margin: 0;
+  font-size: 15px;
+  font-style: normal;
+  line-height: 18px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.movies__duration {
+  margin: 0;
+  color: #A0A0A0;
+  font-size: 13px;
+  font-style: normal;
+  line-height: 18px;
+}
+
+.movies__button {
+  width: 100px;
+  align-self: center;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.movies__button_type_save {
+  position: relative;
+  background-color: #f9f9f9;
+  border-radius: 30px;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 11px;
+  overflow: hidden;
+  padding: 9px 0px;
+}
+
+.movies__button_type_save::before {
+  position: absolute;
+  content: '';
+  border-radius: 30px;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, .1);
+  height: 100%;
+  width: 0;
+  transition: width .5s ease;
+}
+
+.movies__button_type_save:hover::before {
+  width: 100%;
+}
+
+.movies__button_type_delete{
+  background-image: url('../../images/button_delete.svg');
+  height: 29px;
+  border-radius: 30px;
+  scale: 1;
+  transition: scale .5s ease;
+}
+
+.movies__button_type_delete:hover {
+  scale: 1.2;
+}
+
+.movies__button_type_saved {
+  height: 29px;
+  background-image: url('../../images/button_saved.svg');
+  border-radius: 30px;
+  scale: 1;
+  transition: scale .5s ease;
+}
+
+.movies__button_type_saved:hover {
+  scale: 1.1;
+}
+
+@media screen and (max-width:474px) {
+
+  .movies__card{
+    padding: 14px 0;
+    gap: 14px;
+  }
+
+  .movies__name{
+    font-size: 12px;
+  }
+  .movies__duration{
+    font-size: 10px;
+  }
+}

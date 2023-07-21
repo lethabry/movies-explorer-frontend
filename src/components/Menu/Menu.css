@@ -1,0 +1,85 @@
+.menu {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .3);
+  opacity: 0;
+  visibility: hidden;
+  transition: visibility 0.5s, opacity 0.5s ease;
+}
+
+.menu_active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.menu__main {
+  margin: 0 0 0 auto;
+  min-width: 520px;
+  padding: 162px 90px 90px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  background-color: #fff;
+}
+
+.menu__links {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.menu__link {
+  margin: auto;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.menu__button_type_account {
+  padding: 6px 10px;
+  margin: auto auto 0 auto;
+  font-size: 14px;
+}
+
+.menu__button_type_close {
+  position: absolute;
+  top: 23px;
+  right: 23px;
+  background-image: url('../../images/button-close.svg');
+  background-color: inherit;
+  background-size: cover;
+  border: none;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+}
+
+@media screen and (max-width: 618px) {
+  .menu__main {
+    min-width: calc(100% - 60px - 38px);
+  }
+}
+
+@media screen and (max-width: 474px) {
+  .menu__main {
+    padding: 147px 0 46px;
+    min-width: 100%;
+  }
+
+  .menu__button_type_close {
+    top: 14px;
+    right: 14px;
+  }
+
+  .menu__links {
+    gap: 27px;
+  }
+
+  .menu__button_type_account{
+    padding: 6px 12px;
+  }
+}

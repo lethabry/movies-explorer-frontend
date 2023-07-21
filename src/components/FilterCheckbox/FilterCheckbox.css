@@ -1,0 +1,61 @@
+.filter {
+  padding: 26px 0 43px;
+  display: flex;
+  gap: 16px;
+  border-bottom: 1px solid rgb(170, 170, 170, .2);
+}
+
+.filter__label {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+  background-color: #EBEBEB;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.filter__label::after {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 17px;
+  height: 17px;
+  background: radial-gradient(circle at center, #2BE080 0, #2BE080 7.5px, #fff 7.5px, #fff 15px);
+  border-radius: 50%;
+  top: 1.25px;
+  left: 2.5px;
+  transition: all .25s ease;
+}
+
+.filter__checkbox {
+  display: none;
+}
+
+.filter__checkbox:checked+.filter__label::after {
+  left: 19px;
+}
+
+.filter__shorts {
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+}
+
+@media screen and (max-width: 768px) {
+  .filter {
+    padding: 27px 0 52px;
+    gap: 14px;
+  }
+}
+
+@media screen and (max-width: 474px) {
+  .filter{
+    padding: 30px 0 63px;
+  }
+
+  .filter__shorts{
+    font-size: 11px;
+  }
+}
