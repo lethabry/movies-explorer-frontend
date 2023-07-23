@@ -14,7 +14,7 @@ function Footer() {
           <li><a href="https://github.com" className="footer__link" target={"_blank"} rel='noreferrer'>Github</a></li>
         </ul>
       </div>
-    </footer >
+    </footer>
   )
 }
 

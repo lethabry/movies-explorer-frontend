@@ -88,7 +88,7 @@
 }
 
 .about-project__duration-name {
-  font-family: 'Suisse Intl';
+  font-family: 'Suisse Intl', 'Helvetica Neue', Arial, sans-serif;;
   display: block;
   color: #A0A0A0;
   font-size: 14px;

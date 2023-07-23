@@ -46,6 +46,7 @@
 }
 
 .menu__button_type_close {
+  cursor: pointer;
   position: absolute;
   top: 23px;
   right: 23px;
@@ -56,6 +57,12 @@
   padding: 0;
   width: 30px;
   height: 30px;
+  scale: 1;
+  transition: scale .5s ease;
+}
+
+.menu__button_type_close:hover{
+  scale: 1.2;
 }
 
 @media screen and (max-width: 618px) {

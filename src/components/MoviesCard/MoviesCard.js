@@ -7,7 +7,7 @@ function MoviesCard(props) {
   return (
     <li className="movies__card">
       <div className="movies__info">
-        <h3 className="movies__name" style={props.isSavedMovies ? { fontWeight: '700' } : { fontWeight: '500' }}>{props.name}</h3>
+        <h2 className="movies__name" style={props.isSavedMovies ? { fontWeight: '700' } : { fontWeight: '500' }}>{props.name}</h2>
         <p className="movies__duration" style={props.isSavedMovies ? { fontWeight: '700' } : { fontWeight: '400' }}>{props.duration}</p>
       </div>
       <img className="movies__image" src={props.src} alt={`Фотография из фильма ${props.name}`}></img>
@@ -20,7 +20,7 @@ function MoviesCard(props) {
             :
             <button className="movies__button movies__button_type_saved" type="button" aria-label="Кнопка-уведомление о том, что фильм сохранен в избранное"></button>
       }
-    </li >
+    </li>
   )
 }
 

@@ -1,6 +1,5 @@
 import React from "react";
 import Form from "../Form/Form";
-import './Login.css'
 
 function Login() {
 
@@ -17,13 +16,13 @@ function Login() {
   }
   return (
     <Form {...formProps}>
-      <label className="login__label" htmlFor="email">E-mail
-        <input className="login__input" name="email" id="email" type={'email'} required />
-        <span className="login__error"></span>
+      <label className="auth__label" htmlFor="email">E-mail
+        <input className="auth__input" name="email" id="email" type={"email"} placeholder="E-mail" required />
+        <span className="auth__error"></span>
       </label>
-      <label className="login__label" htmlFor="password">Пароль
-        <input className="login__input" name="password" id="password" type={'password'} required/>
-        <span className="login__error"></span>
+      <label className="auth__label" htmlFor="password">Пароль
+        <input className="auth__input" name="password" id="password" type={"password"} placeholder="Пароль" minLength={2} maxLength={30} required />
+        <span className="auth__error"></span>
       </label>
     </Form>
   )

@@ -3,7 +3,7 @@ import './NavTab.css'
 
 function NavTab() {
   return (
-    <section className="nav-tab" aria-label="Навигация по странице">
+    <nav className="nav-tab" aria-label="Навигация по странице">
       <ul className="nav-tab__list">
         <li className="nav-tab__item">
           <a className="nav-tab__link" href="#about-project">О проекте</a>
@@ -15,7 +15,7 @@ function NavTab() {
           <a className="nav-tab__link" href="#about-me">Студент</a>
         </li>
       </ul>
-    </section>
+    </nav>
   )
 }
 

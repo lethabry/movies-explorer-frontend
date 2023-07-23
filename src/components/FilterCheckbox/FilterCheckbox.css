@@ -5,6 +5,7 @@
   border-bottom: 1px solid rgb(170, 170, 170, .2);
 }
 
+
 .filter__label {
   position: relative;
   display: inline-block;
@@ -13,6 +14,12 @@
   background-color: #EBEBEB;
   border-radius: 10px;
   cursor: pointer;
+  scale: 1;
+  transition: scale .5s ease;
+}
+
+.filter__label:hover{
+  scale: 1.1;
 }
 
 .filter__label::after {
@@ -51,11 +58,11 @@
 }
 
 @media screen and (max-width: 474px) {
-  .filter{
+  .filter {
     padding: 30px 0 63px;
   }
 
-  .filter__shorts{
+  .filter__shorts {
     font-size: 11px;
   }
 }

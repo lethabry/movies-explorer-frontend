@@ -6,8 +6,10 @@ import "./Form.css";
 function Form(props) {
   return (
     <section className="auth">
-      <img className="auth__logo" src={logoPath} alt="Логотип проекта movies-explorer" />
-      <h2 className="auth__title">{props.title}</h2>
+      <Link to="/">
+        <img className="auth__logo" src={logoPath} alt="Логотип проекта movies-explorer" />
+      </Link>
+      <h1 className="auth__title">{props.title}</h1>
       <form className="auth__form" method="post">
         {props.children}
         <button type="submit" className={`auth__button ${props.submitButtonClassName}`} aria-label={`${props.buttonLabel}`}>{props.buttonName}</button>

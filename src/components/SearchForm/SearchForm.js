@@ -8,7 +8,7 @@ function SearchForm() {
     <section className="search-form" aria-label="Форма поиска фильма">
       <form className="search-form__form" method="post">
         <div className="search-form__string">
-          <input className="search-form__input" type="text" placeholder="Фильм" />
+          <input className="search-form__input" type="text" placeholder="Фильм" required/>
           <button className="search-form__button" type="submit" aria-label="Кнопка поиска фильма">Поиск</button>
         </div>
         <span className="search-form__error"></span>

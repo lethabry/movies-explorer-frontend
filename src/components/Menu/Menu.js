@@ -6,8 +6,8 @@ import './Menu.css';
 function Menu({ isMenuActive, onMenuClose }) {
 
   return (
-    < div className={`menu ${isMenuActive && `menu_active`}`} >
-      <div className="menu__main">
+    <aside className={`menu ${isMenuActive && `menu_active`}`}>
+      <div className="menu__main navigation">
         <button onClick={() => onMenuClose()} className="menu__button menu__button_type_close" type="button" aria-label="Кнопка закрытия меню"></button>
         <ul className="navigation__links menu__links">
           <li><Link to="/" className="menu__link navigation__link navigation__link_type_movies" onClick={() => onMenuClose()}>Главная</Link></li>
@@ -19,7 +19,7 @@ function Menu({ isMenuActive, onMenuClose }) {
           Аккаунт
         </Link>
       </div>
-    </div>
+    </aside>
   )
 }
 

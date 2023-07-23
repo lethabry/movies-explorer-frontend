@@ -26,7 +26,6 @@ function Navigation({ onMenuClick, isLoggedIn, width }) {
           </ul>
           :
           <button onClick={() => onMenuClick()} type="button" className="navigation__button navigation__button_type_menu" aria-label="Кнопка открытия меню"></button>
-
       }
     </nav>
   )

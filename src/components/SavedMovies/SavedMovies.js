@@ -8,9 +8,11 @@ function SavedMovies(props) {
   const isSavedMovies = true;
   return (
     <>
-      <Header {...props}/>
-      <SearchForm />
-      <MoviesCardList width={props.width} isSavedMovies={isSavedMovies} />
+      <Header {...props} />
+      <main>
+        <SearchForm />
+        <MoviesCardList width={props.width} isSavedMovies={isSavedMovies} />
+      </main>
       <Footer />
     </>
   )

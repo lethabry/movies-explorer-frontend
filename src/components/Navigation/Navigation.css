@@ -109,6 +109,7 @@
 }
 
 .navigation__button_type_menu {
+  cursor: pointer;
   border: none;
   background-color: inherit;
   padding: 0;
@@ -116,6 +117,12 @@
   background-size: contain;
   width: 44px;
   height: 44px;
+  scale: 1;
+  transition: scale .5s ease;
+}
+
+.navigation__button_type_menu:hover{
+  scale: 1.2;
 }
 
 @media screen and (max-width: 474px) {

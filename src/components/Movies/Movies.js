@@ -10,9 +10,11 @@ function Movies(props) {
   return (
     <>
       <Header {...props} />
-      <SearchForm />
-      <Preloader />
-      <MoviesCardList width={props.width} isSavedMovies={isSavedMovies} />
+      <main>
+        <SearchForm />
+        <Preloader />
+        <MoviesCardList width={props.width} isSavedMovies={isSavedMovies} />
+      </main>
       <Footer />
     </>
   )
