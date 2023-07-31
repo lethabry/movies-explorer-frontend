@@ -5,7 +5,6 @@
   border-bottom: 1px solid rgb(170, 170, 170, .2);
 }
 
-
 .filter__label {
   position: relative;
   display: inline-block;
@@ -18,11 +17,11 @@
   transition: scale .5s ease;
 }
 
-.filter__label:hover{
+.filter__label:hover {
   scale: 1.1;
 }
 
-.filter__label::after {
+.filter__label_checked::after {
   content: '';
   position: absolute;
   display: block;
@@ -31,7 +30,20 @@
   background: radial-gradient(circle at center, #2BE080 0, #2BE080 7.5px, #fff 7.5px, #fff 15px);
   border-radius: 50%;
   top: 1.25px;
-  left: 2.5px;
+  left: 19.5px; /* Сдвигаем на 19px вправо */
+  transition: all .25s ease;
+}
+
+.filter__label_unchecked::after {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 17px;
+  height: 17px;
+  background: radial-gradient(circle at center, #2BE080 0, #2BE080 7.5px, #fff 7.5px, #fff 15px);
+  border-radius: 50%;
+  top: 1.25px;
+  left: 1.25px; /* Сдвигаем на 19px влево */
   transition: all .25s ease;
 }
 
@@ -39,9 +51,6 @@
   display: none;
 }
 
-.filter__checkbox:checked+.filter__label::after {
-  left: 19px;
-}
 
 .filter__shorts {
   font-size: 13px;

@@ -10,8 +10,16 @@ function SavedMovies(props) {
     <>
       <Header {...props} />
       <main>
-        <SearchForm />
-        <MoviesCardList width={props.width} isSavedMovies={isSavedMovies} />
+        <SearchForm
+          onSubmit={props.onSubmit}
+          handleCheckbox={props.handleCheckbox}
+          isCheckboxChecked={props.isCheckboxChecked} />
+        <MoviesCardList
+          width={props.width}
+          isSavedMovies={isSavedMovies}
+          movies={props.movies}
+          handleDelete={props.handleRemove}
+        />
       </main>
       <Footer />
     </>

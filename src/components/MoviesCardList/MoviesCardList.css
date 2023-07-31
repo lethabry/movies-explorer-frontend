@@ -4,9 +4,9 @@
 
 .movies__list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, max-content));
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
   justify-content: center;
-  column-gap: 30px;
+  column-gap: 36px;
   row-gap: 32px;
   padding: 0;
   margin: 0;
@@ -68,7 +68,7 @@
   }
 
   .movies__list {
-    row-gap: 17px;
+    row-gap: 13px;
   }
 
   .movies__button_type_more {

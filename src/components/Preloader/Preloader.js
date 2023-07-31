@@ -1,9 +1,9 @@
 import React from 'react'
 import './Preloader.css'
 
-function Preloader() {
+function Preloader(props) {
     return (
-        <div className="preloader">
+        <div className={`preloader ${props.isActive && 'preloader_active'}`}>
             <div className="preloader__container">
                 <span className="preloader__round"></span>
             </div>

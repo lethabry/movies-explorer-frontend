@@ -1,38 +1,77 @@
 import React from "react";
 import MoviesCard from "../MoviesCard/MoviesCard";
-import initialCards from "../../utils/constants";
-import imagePath from "../../images/1.png";
+import { imagePath } from "../../utils/constants";
 import './MoviesCardList.css';
 
 function MoviesCardList(props) {
 
-  const [cards, setCards] = React.useState([]);
+  const countInitialMoviesDesktop = 12;
+  const countInitialMoviesPad = 8;
+  const countInitialMoviesPhone = 5;
+  const countPartDesktop = 3;
+  const countPartPad = 2;
 
-  function countInitialCards() {
-    if (props.width <= 768 && props.width > 474) {
-      setCards(initialCards.slice(0, 8));
-    }
-    else if (props.width <= 474) {
-      setCards(initialCards.slice(0, 5));
+  const [partMovies, setPartMovies] = React.useState([]);
+  const [isNoMoreMovies, setIsNoMoreMovies] = React.useState(true);
+
+  function countInitialMovies() {
+    if (props.isSavedMovies) {
+      setPartMovies(props.movies);
     }
     else {
-      setCards(initialCards);
+      if (props.width <= 768 && props.width > 480) {
+        setPartMovies(props.movies.slice(0, countInitialMoviesPad));
+      }
+      else if (props.width <= 480) {
+        setPartMovies(props.movies.slice(0, countInitialMoviesPhone));
+      }
+      else {
+        setPartMovies(props.movies.slice(0, countInitialMoviesDesktop));
+      }
     }
   }
 
+  function checkMoviesLength() {
+    setIsNoMoreMovies(partMovies.length === props.movies.length);
+  }
+
+  function getMore() {
+    const finalIndex = partMovies.length;
+    props.width > 768 ?
+      setPartMovies(props.movies.slice(0, finalIndex + countPartDesktop))
+      :
+      setPartMovies(props.movies.slice(0, finalIndex + countPartPad));
+    checkMoviesLength();
+  }
+
   React.useEffect(() => {
-    countInitialCards();
-  }, [props.width]);
+    countInitialMovies();
+  }, [props.width, props.movies.length]);
+
+  React.useEffect(() => {
+    checkMoviesLength();
+  }, [countInitialMovies]);
 
   return (
     <section className="movies">
       <ul className="movies__list">
-        {cards.map(card => (
-          <MoviesCard name={card.name} key={card.id} duration={card.duration} src={imagePath} isSavedMovies={props.isSavedMovies}/>
+        {partMovies.map((movie) => (
+          <MoviesCard
+            movie={movie}
+            name={movie.nameRU}
+            key={props.isSavedMovies ? movie._id : movie.id}
+            duration={movie.duration}
+            src={props.isSavedMovies ? movie.image : `${imagePath}` + `${movie.image.url}`}
+            trailerLink={movie.trailerLink}
+            isSavedMovies={props.isSavedMovies}
+            onMovieSave={props.handleSave}
+            onMovieDelete={props.handleDelete}
+          />
         ))}
       </ul>
       {
-        !props.isSavedMovies && <button className="movies__button movies__button_type_more" aria-label="Кнопка загрузки новых фильмов" type="button">Ещё</button>
+        (!props.isSavedMovies && !isNoMoreMovies) &&
+        <button className="movies__button movies__button_type_more" onClick={getMore} aria-label="Кнопка загрузки новых фильмов" type="button">Ещё</button>
       }
     </section>
   )
