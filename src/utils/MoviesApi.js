@@ -1,4 +1,4 @@
-import { moviesApiPath } from "./constants.js";
+import { MOVIES_API_PATH } from "./constants.js";
 
 function checkRes(res) {
   if (res.ok) {
@@ -9,6 +9,6 @@ function checkRes(res) {
 }
 
 export function getApiMovies() {
-  return fetch(moviesApiPath)
+  return fetch(MOVIES_API_PATH)
     .then((res) => checkRes(res));
 }

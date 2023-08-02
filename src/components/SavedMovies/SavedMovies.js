@@ -12,6 +12,7 @@ function SavedMovies(props) {
       <main>
         <SearchForm
           onSubmit={props.onSubmit}
+          onFilter={props.onFilter}
           handleCheckbox={props.handleCheckbox}
           isCheckboxChecked={props.isCheckboxChecked} />
         <MoviesCardList

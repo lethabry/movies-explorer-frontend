@@ -1,4 +1,4 @@
-import { mainApiPath } from "./constants";
+import { MAIN_API_PATH, IMAGE_PATH } from "./constants";
 
 function checkRes(res) {
   if (res.ok) {
@@ -9,7 +9,7 @@ function checkRes(res) {
 }
 
 export function register(name, email, password) {
-  return fetch(`${mainApiPath}/signup`, {
+  return fetch(`${MAIN_API_PATH}/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -21,7 +21,7 @@ export function register(name, email, password) {
 
 
 export function login(email, password) {
-  return fetch(`${mainApiPath}/signin`, {
+  return fetch(`${MAIN_API_PATH}/signin`, {
     method: "POST",
     credentials: 'include',
     headers: {
@@ -41,7 +41,7 @@ export function login(email, password) {
 }
 
 export function getCurrentUser() {
-  return fetch(`${mainApiPath}/users/me`, {
+  return fetch(`${MAIN_API_PATH}/users/me`, {
     credentials: 'include',
     headers: {
       "Content-Type": "application/json"
@@ -51,7 +51,7 @@ export function getCurrentUser() {
 }
 
 export function updateUserData(name, email) {
-  return fetch(`${mainApiPath}/users/me`, {
+  return fetch(`${MAIN_API_PATH}/users/me`, {
     method: 'PATCH',
     credentials: 'include',
     headers: {
@@ -66,7 +66,7 @@ export function updateUserData(name, email) {
 }
 
 export function signOut() {
-  return fetch(`${mainApiPath}/signout`, {
+  return fetch(`${MAIN_API_PATH}/signout`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -77,7 +77,7 @@ export function signOut() {
 }
 
 export function saveMovie(movie) {
-  return fetch(`${mainApiPath}/movies`, {
+  return fetch(`${MAIN_API_PATH}/movies`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -89,9 +89,9 @@ export function saveMovie(movie) {
       duration: movie.duration,
       year: movie.year,
       description: movie.description,
-      image: `https://api.nomoreparties.co/${movie.image.url}`,
+      image: `${IMAGE_PATH}` + `${movie.image.url}`,
       trailerLink: movie.trailerLink,
-      thumbnail: `https://api.nomoreparties.co/${movie.image.formats.thumbnail.url}`,
+      thumbnail: `${IMAGE_PATH}` + `${movie.image.formats.thumbnail.url}`,
       movieId: movie.id,
       nameRU: movie.nameRU,
       nameEN: movie.nameEN,
@@ -101,7 +101,7 @@ export function saveMovie(movie) {
 }
 
 export function getSavedMovies() {
-  return fetch(`${mainApiPath}/movies`, {
+  return fetch(`${MAIN_API_PATH}/movies`, {
     credentials: 'include',
     headers: {
       "Content-Type": "application/json"
@@ -111,7 +111,7 @@ export function getSavedMovies() {
 }
 
 export function removeSavedMovie(movieId) {
-  return fetch(`${mainApiPath}/movies/${movieId}`, {
+  return fetch(`${MAIN_API_PATH}/movies/${movieId}`, {
     method: 'DELETE',
     credentials: 'include',
     headers: {

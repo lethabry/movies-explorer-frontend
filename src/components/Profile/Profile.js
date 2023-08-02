@@ -25,8 +25,6 @@ function Profile(props) {
     props.handleUserData(userState.name, userState.email);
   }
 
-  console.log(userState, isChanging, isValid);
-
   return (
     <>
       <Header {...props} />

@@ -12,6 +12,7 @@ import Menu from '../Menu/Menu';
 import InfoTooltip from '../InfoTooltip/InfoTooltip';
 import ProtectedRouteElement from './ProtectedRouteElement/ProtectedRouteElement';
 import { getApiMovies } from '../../utils/MoviesApi';
+import { SHORT_DURATION } from '../../utils/constants';
 import {
   register,
   login,
@@ -33,7 +34,9 @@ function App() {
 
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
+  const [shownCards, setShownCards] = React.useState([]);
   const [savedCards, setSavedCards] = React.useState([]);
+  const [shownSavedCards, setShownSavedCards] = React.useState([]);
   const [isCheckboxChecked, setIsCheckboxChecked] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const [textResult, setTextResult] = React.useState('');
@@ -43,35 +46,25 @@ function App() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    if (localStorage.getItem('movies')) {
-      if (isCheckboxChecked) {
-        filterDurationMovies();
-      }
-      else {
-        setCards(JSON.parse(localStorage.getItem('movies')));
-        setSavedCards(JSON.parse(localStorage.getItem('savedMovies')));
-      }
-    }
-  }, [isCheckboxChecked]);
-
-  React.useEffect(() => {
     if (localStorage.getItem('name')) {
       setHasUserSearched(true);
-      setCards(JSON.parse(localStorage.getItem('movies')));
+      setShownCards(JSON.parse(localStorage.getItem('movies')));
+      setCards(JSON.parse(localStorage.getItem('allMovies')))
       setIsCheckboxChecked(JSON.parse(localStorage.getItem('isCheckboxChecked')));
     }
   }, [])
 
   React.useEffect(() => {
-    const token = localStorage.getItem('jwt');
-    if (token) {
-      handleToken();
+    handleToken();
+    if (isLoggedIn) {
       Promise.all([getCurrentUser(), getSavedMovies()])
         .then(([userData, moviesData]) => {
           const { user } = userData;
           const { movies } = moviesData;
           setCurrentUser(user);
           setSavedCards(movies);
+          setShownSavedCards(movies);
+          localStorage.setItem('savedMovies', JSON.stringify(movies));
         })
         .catch((err) => console.log(`Error: ${err.message}`))
     }
@@ -94,7 +87,7 @@ function App() {
       .then(() => {
         setTextResult('Регистрация прошла успешно');
         setIsTooltipOpen(true);
-        navigate('/signin', { replace: true });
+        loginUser(userData);
       })
       .catch(() => {
         setTextResult('Возникла ошибка при регистрации пользователя')
@@ -142,7 +135,9 @@ function App() {
         setIsLoggedIn(false);
         localStorage.clear();
         setCards([]);
+        setShownCards([]);
         setSavedCards([]);
+        setHasUserSearched(false);
         navigate('/', { replace: true });
       })
       .catch((err) => console.log(err))
@@ -150,26 +145,49 @@ function App() {
 
   function getMovies(name) {
     setCards([]);
+    setShownCards([]);
     setTextResult('');
     setIsLoading(true);
-    getApiMovies()
-      .then((movies) => {
-        const filteredMovies = filterMovies(movies, name);
+    if (!hasUserSearched) {
+      getApiMovies()
+        .then((movies) => {
+          const filteredMovies = filterMovies(movies, name);
+          if (filteredMovies.length === 0) {
+            setTextResult('Ничего не найдено');
+            setIsTooltipOpen(true);
+            return;
+          }
+          setShownCards(filteredMovies);
+          setHasUserSearched(true);
+          saveRequest(name, filteredMovies, movies);
+        })
+        .catch(() => {
+          setTextResult('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
+          setIsTooltipOpen(true);
+        }
+        )
+        .finally(() => setIsLoading(false))
+    }
+    else {
+      try {
+        const allMovies = JSON.parse(localStorage.getItem('allMovies'));
+        const filteredMovies = filterMovies(allMovies, name);
         if (filteredMovies.length === 0) {
           setTextResult('Ничего не найдено');
           setIsTooltipOpen(true);
           return;
         }
-        setCards(filteredMovies);
-        setHasUserSearched(true);
-        saveRequest(name, filteredMovies);
-      })
-      .catch(() => {
+        setShownCards(filteredMovies);
+        saveRequest(name, filteredMovies, allMovies);
+      }
+      catch {
         setTextResult('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
         setIsTooltipOpen(true);
       }
-      )
-      .finally(() => setIsLoading(false))
+      finally {
+        setIsLoading(false);
+      }
+    }
   }
 
   function handleSaveMovie(movie) {
@@ -177,8 +195,9 @@ function App() {
       .then((movieData) => {
         const { movie } = movieData;
         setSavedCards([...savedCards, movie]);
-        const filteredMovies = filterSavedMovies(cards, [...savedCards, movie]);
-        setCards(filteredMovies);
+        const filteredMovies = filterSavedMovies(shownCards, [...savedCards, movie]);
+        setShownCards(filteredMovies);
+        setShownSavedCards([...savedCards, movie]);
         localStorage.setItem('movies', JSON.stringify(filteredMovies));
         localStorage.setItem('savedMovies', JSON.stringify([...savedCards, movie]));
       })
@@ -193,50 +212,60 @@ function App() {
       .then(() => {
         setSavedCards((state) => {
           const updateSavedMovies = state.filter((movie) => movie._id !== id);
-          const filteredMovies = filterSavedMovies(cards, updateSavedMovies);
-          setCards(filteredMovies);
+          const filteredMovies = filterSavedMovies(shownCards, updateSavedMovies);
+          setShownCards(filteredMovies);
           localStorage.setItem('movies', JSON.stringify(filteredMovies));
           localStorage.setItem('savedMovies', JSON.stringify(updateSavedMovies));
+          setShownSavedCards(updateSavedMovies);
           return updateSavedMovies;
         });
       })
       .catch(() => {
-        setTextResult('Во время удаления фильма из избранного прошзошла ошибка');
+        setTextResult('Во время удаления фильма из избранного произошла ошибка');
         setIsTooltipOpen(true);
       });
   }
 
   function handleFilterSavedMovies(name) {
-    setSavedCards(filterMovies(savedCards, name));
+    setShownSavedCards([]);
+    const savedMovies = JSON.parse(localStorage.getItem('savedMovies'));
+    const filteredSavedMovies = filterMovies(savedMovies, name);
+    setShownSavedCards(filteredSavedMovies);
   }
 
-  function handleToken() {
-    setIsLoggedIn(true);
-    navigate('/movies', { replace: true });
+  function handleFilterMovies(name) {
+    setShownCards([]);
+    const allMovies = JSON.parse(localStorage.getItem('allMovies'));
+    const filteredMovies = filterMovies(allMovies, name);
+    setShownCards(filteredMovies)
+    saveRequest(name, filteredMovies, allMovies);
   }
 
   function handleCheckbox() {
     setIsCheckboxChecked(!isCheckboxChecked);
   }
 
-  function saveRequest(name, movies) {
-    localStorage.setItem('name', name);
-    localStorage.setItem('isCheckboxChecked', JSON.stringify(isCheckboxChecked));
-    localStorage.setItem('movies', JSON.stringify(movies));
+  function handleToken() {
+    const token = localStorage.getItem('jwt');
+    if (token) {
+      setIsLoggedIn(true);
+    }
   }
 
-  function filterDurationMovies() {
-    setCards((state => state.filter((el) => isCheckboxChecked ? el.duration <= '40' : el.duration >= '0')));
-    setSavedCards((state => state.filter((el) => isCheckboxChecked ? el.duration <= '40' : el.duration >= '0')));
+  function saveRequest(name, filteredMovies, allMovies) {
+    localStorage.setItem('name', name);
+    localStorage.setItem('isCheckboxChecked', JSON.stringify(isCheckboxChecked));
+    localStorage.setItem('movies', JSON.stringify(filteredMovies));
+    localStorage.setItem('allMovies', JSON.stringify(allMovies));
   }
 
   function filterMovies(array, name) {
-    const searchedName = name.split('').map(el => el.toLowerCase()).join('');
+    const searchedName = name.toLowerCase();
     const filteredArray = array.filter((el) => {
-      const nameRu = el.nameRU.split('').map(el => el.toLowerCase()).join('');
-      const nameEn = el.nameEN.split('').map(el => el.toLowerCase()).join('');
+      const nameRu = el.nameRU.toLowerCase();
+      const nameEn = el.nameEN.toLowerCase();
       const hasSearchedName = nameRu.includes(searchedName) || nameEn.includes(searchedName);
-      const isShort = el.duration <= '40';
+      const isShort = el.duration <= SHORT_DURATION;
       return isCheckboxChecked ? hasSearchedName && isShort : hasSearchedName;
     });
     const filterSavedArray = filterSavedMovies(filteredArray, savedCards);
@@ -274,7 +303,8 @@ function App() {
     isLoggedIn: isLoggedIn,
     width: innerWidth,
     onSubmit: getMovies,
-    movies: cards,
+    onFilter: handleFilterMovies,
+    movies: shownCards,
     isLoading: isLoading,
     handleCheckbox: handleCheckbox,
     isCheckboxChecked: isCheckboxChecked,
@@ -289,9 +319,10 @@ function App() {
     isCheckboxChecked: isCheckboxChecked,
     isLoggedIn: isLoggedIn,
     width: innerWidth,
-    movies: savedCards,
+    movies: shownSavedCards,
     handleRemove: handleRemoveMovie,
     onSubmit: handleFilterSavedMovies,
+    onFilter: handleFilterSavedMovies,
   }
 
   const menuProps = {

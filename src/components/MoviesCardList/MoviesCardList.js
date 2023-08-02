@@ -1,15 +1,9 @@
 import React from "react";
 import MoviesCard from "../MoviesCard/MoviesCard";
-import { imagePath } from "../../utils/constants";
+import { IMAGE_PATH, COUNT_INITIAL_MOVIES_DESKTOP, COUNT_INITIAL_MOVIES_PAD, COUNT_INITIAL_MOVIES_PHONE, COUNT_PART_DESKTOP, COUNT_PART_PAD } from "../../utils/constants";
 import './MoviesCardList.css';
 
 function MoviesCardList(props) {
-
-  const countInitialMoviesDesktop = 12;
-  const countInitialMoviesPad = 8;
-  const countInitialMoviesPhone = 5;
-  const countPartDesktop = 3;
-  const countPartPad = 2;
 
   const [partMovies, setPartMovies] = React.useState([]);
   const [isNoMoreMovies, setIsNoMoreMovies] = React.useState(true);
@@ -20,13 +14,13 @@ function MoviesCardList(props) {
     }
     else {
       if (props.width <= 768 && props.width > 480) {
-        setPartMovies(props.movies.slice(0, countInitialMoviesPad));
+        setPartMovies(props.movies.slice(0, COUNT_INITIAL_MOVIES_PAD));
       }
       else if (props.width <= 480) {
-        setPartMovies(props.movies.slice(0, countInitialMoviesPhone));
+        setPartMovies(props.movies.slice(0, COUNT_INITIAL_MOVIES_PHONE));
       }
       else {
-        setPartMovies(props.movies.slice(0, countInitialMoviesDesktop));
+        setPartMovies(props.movies.slice(0, COUNT_INITIAL_MOVIES_DESKTOP));
       }
     }
   }
@@ -37,10 +31,10 @@ function MoviesCardList(props) {
 
   function getMore() {
     const finalIndex = partMovies.length;
-    props.width > 768 ?
-      setPartMovies(props.movies.slice(0, finalIndex + countPartDesktop))
+    props.width > 1021 ?
+      setPartMovies(props.movies.slice(0, finalIndex + COUNT_PART_DESKTOP))
       :
-      setPartMovies(props.movies.slice(0, finalIndex + countPartPad));
+      setPartMovies(props.movies.slice(0, finalIndex + COUNT_PART_PAD));
     checkMoviesLength();
   }
 
@@ -61,7 +55,7 @@ function MoviesCardList(props) {
             name={movie.nameRU}
             key={props.isSavedMovies ? movie._id : movie.id}
             duration={movie.duration}
-            src={props.isSavedMovies ? movie.image : `${imagePath}` + `${movie.image.url}`}
+            src={props.isSavedMovies ? movie.image : `${IMAGE_PATH}` + `${movie.image.url}`}
             trailerLink={movie.trailerLink}
             isSavedMovies={props.isSavedMovies}
             onMovieSave={props.handleSave}

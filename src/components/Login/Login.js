@@ -6,7 +6,7 @@ function Login(props) {
 
   const { values: userState, handleChange: handleChange, errors: errorsState, isValid: isValid } = useForm({ email: '', password: '' });
 
-  function handleSubmit(e){
+  function handleSubmit(e) {
     e.preventDefault();
     props.handleLogin(userState);
   }
@@ -23,7 +23,7 @@ function Login(props) {
     linkName: 'Регистрация',
     isValid: isValid,
     onSubmit: handleSubmit,
-    isLoading: props.isLoading
+    isLoading: props.isLoading,
   }
 
   return (

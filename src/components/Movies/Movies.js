@@ -17,6 +17,7 @@ function Movies(props) {
           handleCheckbox={props.handleCheckbox}
           hasUserSearched={props.hasUserSearched}
           isCheckboxChecked={props.isCheckboxChecked}
+          onFilter={props.onFilter}
         />
         <Preloader isActive={props.isLoading} />
         {props.movies.length > 0 && <MoviesCardList

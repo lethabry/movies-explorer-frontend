@@ -5,7 +5,7 @@ import useForm from "../../hooks/useForm";
 function Register(props) {
 
   const { values: userState, handleChange: handleChange, errors: errorsState, isValid: isValid } = useForm({ name: '', email: '', password: '' });
-  
+
   function handleSubmit(e) {
     e.preventDefault();
     props.handleRegistration(userState);

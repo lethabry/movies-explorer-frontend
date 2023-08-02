@@ -1,12 +1,22 @@
 import React from "react";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
+import { useLocation } from "react-router-dom";
 import './SearchForm.css';
 
 function SearchForm(props) {
+  const location = useLocation();
 
   const [value, setValue] = React.useState('');
   const error = 'Нужно ввести ключевое слово';
   const [isValid, setIsValid] = React.useState(true);
+
+  React.useEffect(() => {
+    localStorage.setItem('isCheckboxChecked', JSON.stringify(props.isCheckboxChecked));
+    if (value === '') {
+      return;
+    }
+    props.onFilter(value);
+  }, [props.isCheckboxChecked])
 
   React.useEffect(() => {
     if (props.hasUserSearched) {
