@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { CurrentUserContext } from '../../context/CurrentUserContext';
 import Profile from '../Profile/Profile';
 import NotFound from '../NotFound/NotFound';
@@ -38,12 +38,14 @@ function App() {
   const [savedCards, setSavedCards] = React.useState([]);
   const [shownSavedCards, setShownSavedCards] = React.useState([]);
   const [isCheckboxChecked, setIsCheckboxChecked] = React.useState(false);
+  const [isSavedCardsCheckboxChecked, setIsSavedCardsCheckboxChecked] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const [textResult, setTextResult] = React.useState('');
   const [isTooltipOpen, setIsTooltipOpen] = React.useState(false);
   const [hasUserSearched, setHasUserSearched] = React.useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   React.useEffect(() => {
     if (localStorage.getItem('name')) {
@@ -51,8 +53,13 @@ function App() {
       setShownCards(JSON.parse(localStorage.getItem('movies')));
       setCards(JSON.parse(localStorage.getItem('allMovies')))
       setIsCheckboxChecked(JSON.parse(localStorage.getItem('isCheckboxChecked')));
+
     }
   }, [])
+
+  React.useEffect(() => {
+    setIsSavedCardsCheckboxChecked(false);
+  }, [location.pathname === '/saved-movies'])
 
   React.useEffect(() => {
     handleToken();
@@ -196,7 +203,6 @@ function App() {
         const { movie } = movieData;
         setSavedCards([...savedCards, movie]);
         const filteredMovies = filterSavedMovies(shownCards, [...savedCards, movie]);
-        setShownCards(filteredMovies);
         setShownSavedCards([...savedCards, movie]);
         localStorage.setItem('movies', JSON.stringify(filteredMovies));
         localStorage.setItem('savedMovies', JSON.stringify([...savedCards, movie]));
@@ -213,7 +219,6 @@ function App() {
         setSavedCards((state) => {
           const updateSavedMovies = state.filter((movie) => movie._id !== id);
           const filteredMovies = filterSavedMovies(shownCards, updateSavedMovies);
-          setShownCards(filteredMovies);
           localStorage.setItem('movies', JSON.stringify(filteredMovies));
           localStorage.setItem('savedMovies', JSON.stringify(updateSavedMovies));
           setShownSavedCards(updateSavedMovies);
@@ -242,7 +247,10 @@ function App() {
   }
 
   function handleCheckbox() {
-    setIsCheckboxChecked(!isCheckboxChecked);
+    location.pathname === '/movies' ?
+      setIsCheckboxChecked(!isCheckboxChecked)
+      :
+      setIsSavedCardsCheckboxChecked(!isSavedCardsCheckboxChecked)
   }
 
   function handleToken() {
@@ -260,13 +268,20 @@ function App() {
   }
 
   function filterMovies(array, name) {
+    let isShortMovie;
+    if (location.pathname === '/movies') {
+      isShortMovie = isCheckboxChecked;
+    }
+    if (location.pathname === '/saved-movies') {
+      isShortMovie = isSavedCardsCheckboxChecked;
+    }
     const searchedName = name.toLowerCase();
     const filteredArray = array.filter((el) => {
       const nameRu = el.nameRU.toLowerCase();
       const nameEn = el.nameEN.toLowerCase();
       const hasSearchedName = nameRu.includes(searchedName) || nameEn.includes(searchedName);
       const isShort = el.duration <= SHORT_DURATION;
-      return isCheckboxChecked ? hasSearchedName && isShort : hasSearchedName;
+      return isShortMovie ? hasSearchedName && isShort : hasSearchedName;
     });
     const filterSavedArray = filterSavedMovies(filteredArray, savedCards);
     return filterSavedArray;
@@ -316,7 +331,7 @@ function App() {
   const savedMoviesProps = {
     onMenuClick: handleBurgerButtonClick,
     handleCheckbox: handleCheckbox,
-    isCheckboxChecked: isCheckboxChecked,
+    isCheckboxChecked: isSavedCardsCheckboxChecked,
     isLoggedIn: isLoggedIn,
     width: innerWidth,
     movies: shownSavedCards,

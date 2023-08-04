@@ -11,8 +11,7 @@ function SearchForm(props) {
   const [isValid, setIsValid] = React.useState(true);
 
   React.useEffect(() => {
-    localStorage.setItem('isCheckboxChecked', JSON.stringify(props.isCheckboxChecked));
-    if (value === '') {
+    if (value === '' && location.pathname === '/movies') {
       return;
     }
     props.onFilter(value);

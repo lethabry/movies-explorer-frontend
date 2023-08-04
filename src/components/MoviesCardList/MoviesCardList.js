@@ -40,7 +40,7 @@ function MoviesCardList(props) {
 
   React.useEffect(() => {
     countInitialMovies();
-  }, [props.width, props.movies.length]);
+  }, [props.width, props.movies]);
 
   React.useEffect(() => {
     checkMoviesLength();
